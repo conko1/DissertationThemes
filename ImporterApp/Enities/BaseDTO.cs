@@ -1,8 +1,8 @@
 ﻿namespace ImporterApp.Entities
 {
-    public abstract class BaseDTO<T> where T : new()
+    internal abstract class BaseDTO<T> where T : new()
     {
-        public virtual T TransformToEntity()
+        internal virtual T TransformToEntity()
         {
             return new T();
         }

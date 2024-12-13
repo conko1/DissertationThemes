@@ -2,21 +2,21 @@
 {
     public class General
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public string Supervisor { get; set; }
+        public string Supervisor { get; set; } = string.Empty;
 
-        public string StProgram { get; set; }
+        public string StProgram { get; set; } = string.Empty;
 
-        public string FieldOfStudy { get; set; }
+        public string FieldOfStudy { get; set; } = string.Empty;
 
         public bool IsFullTimeStudy { get; set; }
 
         public bool IsExternalStudy { get; set; }
 
-        public string ResearchType { get; set; }
+        public string ResearchType { get; set; } = string.Empty;
 
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; }
     }

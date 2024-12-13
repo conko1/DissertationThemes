@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ImporterApp.DTO;
+using ImporterApp.Enities;
 
 namespace ImporterApp.Services
 {
     internal interface IImporterService
     {
-        Task ResetAndImport();
-        Task ImportSupervisors(string filePath);
-        Task ImportThemes(string filePath);
-        Task ImportStPrograms(string filePath);
+        Task ResetDatabaseState();
+        Task ImportSupervisors(List<SupervisorDTO> supervisors);
+        Task ImportThemes(List<ThemeDTO> themes);
+        Task ImportStPrograms(List<StProgramDTO> stPrograms);
     }
 }

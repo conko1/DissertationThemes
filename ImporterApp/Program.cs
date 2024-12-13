@@ -7,20 +7,38 @@ using ImporterApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Data;
+using SharedLibrary.Entity;
 using SharedLibrary.Services;
 
 namespace ImporterApp {
     class Program
     {
-        static async Task Main(string[] args)
+        public async static Task<int> Main(string[] args)
         {
-            var serviceProvider = ConfigureServices();
+            if (args.Length == 0)
+            {
+                Console.Error.WriteLine("Zadajte príklaz vo formáte ImporterApp.exe '<path_toFile>'");
+                return -1;
+            }
 
+            var serviceProvider = ConfigureServices();
             var importerService = serviceProvider.GetRequiredService<IImporterService>();
 
-            await importerService.ResetAndImport();
+            if (args.Length > 1 && (args[1] == "-r" || args[1] == "--remove-previous-data"))
+            {
+                await importerService.ResetDatabaseState();
+            }
 
-            var fileContent = await FileHelper.ReadFile("C:\\Users\\Ultra\\Desktop\\pot_uloha\\phd_temy.csv");
+            List<String> fileContent = [];
+            try
+            {
+                fileContent = await FileHelper.ReadFile(args[0]);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return -1;
+            }
 
             var transformerObject = new CSVTransformer<General>();
             var generalObjects = transformerObject.GenerateDefaultObjects(fileContent);
@@ -31,8 +49,20 @@ namespace ImporterApp {
             var supervisorDto = dtoConverter.ConvertFromGeneralToDto<SupervisorDTO>(generalObjects);
             var stProgramDto = dtoConverter.ConvertFromGeneralToDto<StProgramDTO>(generalObjects);
 
-            //var themes = importer.Import(fileContent);
-            Console.WriteLine(themeDto);
+            for (int i = 0; i < themeDto.Count; i++)
+            {
+                var theme = themeDto[i];
+                if (theme.Description.Contains("<br>"))
+                {
+                    theme.Description = theme.Description.Replace("<br>", "\n");
+                }
+            }
+
+            importerService.ImportSupervisors(supervisorDto);
+            importerService.ImportStPrograms(stProgramDto);
+            importerService.ImportThemes(themeDto);
+
+            return 0;
         }
 
         private static ServiceProvider ConfigureServices()

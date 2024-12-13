@@ -13,6 +13,30 @@ namespace SharedLibrary.Services
             _context = context;
         }
 
+        public async Task<List<StProgram>> GetAllStPrograms()
+        {
+            return await _context.StPrograms.ToListAsync();
+        }
+
+        public async Task<StProgram> GetStProgramById(int id)
+        {
+            return await _context.StPrograms.FirstOrDefaultAsync(t => t.Id == id);
+        }
+
+        public async Task<List<Theme>> GetStProgramThemes(int id)
+        {
+            return await _context.Themes
+                .Where(t => t.StProgramId == id)
+                .ToListAsync();
+        }
+
+        public async Task<StProgram> GetStProgramByFieldOfStudy(string fieldOfStudy)
+        {
+            return await _context.StPrograms
+                .Where(t => t.FieldOfStudy == fieldOfStudy)
+                .FirstAsync();
+        }
+
         public async Task AddStProgram(StProgram stProgram)
         {
             _context.StPrograms.Add(stProgram);
@@ -28,23 +52,6 @@ namespace SharedLibrary.Services
         public async Task DeleteAllStPrograms()
         {
             await _context.StPrograms.ExecuteDeleteAsync();
-        }
-
-        public async Task<List<StProgram>> GetAllStPrograms()
-        {
-            return await _context.StPrograms.ToListAsync();
-        }
-
-        public async Task<StProgram> GetStProgramById(int id)
-        {
-            return await _context.StPrograms.FirstOrDefaultAsync(t => t.Id == id);
-        }
-
-        public async Task<List<Theme>> GetStProgramThemes(int id)
-        {
-            return await _context.Themes
-            .Where(t => t.StProgramId == id)
-            .ToListAsync();
         }
     }
 }

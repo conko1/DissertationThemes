@@ -9,7 +9,7 @@ namespace ImporterApp.Enities
 
         internal string Name { get; set; } = string.Empty;
 
-        public override StProgram TransformToEntity()
+        internal override StProgram TransformToEntity()
         {
             return new StProgram
             {

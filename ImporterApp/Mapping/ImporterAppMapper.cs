@@ -14,7 +14,7 @@ namespace ImporterApp.Mapping
                 .ForMember(dest => dest.FieldOfStudy, opt => opt.MapFrom(src => src.FieldOfStudy));
 
             CreateMap<General, SupervisorDTO>()
-                .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.Supervisor));
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Supervisor));
 
             CreateMap<General, ThemeDTO>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -23,6 +23,7 @@ namespace ImporterApp.Mapping
                 .ForMember(dest => dest.Supervisor, opt => opt.MapFrom(src => src.Supervisor))
                 .ForMember(dest => dest.StProgramId, opt => opt.Ignore())
                 .ForMember(dest => dest.StProgram, opt => opt.MapFrom(src => src.StProgram))
+                .ForMember(dest => dest.FieldOfStudy, opt => opt.MapFrom(src => src.FieldOfStudy))
                 .ForMember(dest => dest.IsFullTimeStudy, opt => opt.MapFrom(src => src.IsFullTimeStudy))
                 .ForMember(dest => dest.IsExternalStudy, opt => opt.MapFrom(src => src.IsExternalStudy))
                 .ForMember(dest => dest.ResearchType, opt => opt.MapFrom(src => TypeExtension.ToEnum(src.ResearchType)))

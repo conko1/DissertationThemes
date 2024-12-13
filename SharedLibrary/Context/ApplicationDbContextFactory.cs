@@ -13,7 +13,6 @@ namespace SharedLibrary.Data
 
             var relativePath = "DissertionThemes.db";
             var absolutePath = Path.GetFullPath(relativePath);
-            Console.WriteLine($"Database File Path: {absolutePath}");
 
             optionsBuilder.UseSqlite(connectionString);
 

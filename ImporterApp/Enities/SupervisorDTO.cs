@@ -7,12 +7,12 @@ namespace ImporterApp.Enities
 {
     internal class SupervisorDTO : BaseDTO<Supervisor>
     {
-        internal string Fullname { get; set; } = string.Empty;
+        internal string FullName { get; set; } = string.Empty;
 
-        public override Supervisor TransformToEntity() 
+        internal override Supervisor TransformToEntity() 
         { 
             return new Supervisor { 
-                FullName = Fullname
+                FullName = FullName
             };
         }
     }

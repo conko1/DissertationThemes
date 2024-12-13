@@ -7,6 +7,7 @@ namespace SharedLibrary.Services
         Task<List<StProgram>> GetAllStPrograms();
         Task<StProgram> GetStProgramById(int id);
         Task<List<Theme>> GetStProgramThemes(int id);
+        Task<StProgram> GetStProgramByFieldOfStudy(string fieldOfStudy);
 
         Task AddStProgram(StProgram stProgram);
         Task BulkAddStPrograms(List<StProgram> stPrograms);

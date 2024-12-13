@@ -4,31 +4,33 @@ using SharedLibrary.Types;
 
 namespace ImporterApp.DTO
 {
-    public class ThemeDTO : BaseDTO<Theme>
+    internal class ThemeDTO : BaseDTO<Theme>
     {
-        public int Id { get; set; }
+        internal int Id { get; set; }
 
-        public string Name { get; set; }
+        internal string Name { get; set; } = string.Empty;
 
-        public int SupervisorId { get; set; }
+        internal int SupervisorId { get; set; }
 
-        public string Supervisor { get; set; }
+        internal string Supervisor { get; set; } = string.Empty;
 
-        public int StProgramId { get; set; }
+        internal int StProgramId { get; set; }
 
-        public string StProgram { get; set; }
+        internal string StProgram { get; set; } = string.Empty;
 
-        public bool IsFullTimeStudy { get; set; }
+        internal string FieldOfStudy { get; set; } = string.Empty;
 
-        public bool IsExternalStudy { get; set; }
+        internal bool IsFullTimeStudy { get; set; }
 
-        public ResearchType ResearchType { get; set; }
+        internal bool IsExternalStudy { get; set; }
 
-        public string Description { get; set; }
+        internal ResearchType ResearchType { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        internal string Description { get; set; } = string.Empty;
 
-        public override Theme TransformToEntity()
+        internal DateTime CreatedAt { get; set; }
+
+        internal override Theme TransformToEntity()
         {
             return new Theme
             {

@@ -1,44 +1,106 @@
-﻿using ImporterApp.Importers;
-using ImporterApp.Services;
-using SharedLibrary.Data;
+﻿using System.IO.IsolatedStorage;
+using ImporterApp.DTO;
+using ImporterApp.Enities;
+using SharedLibrary.Entity;
 using SharedLibrary.Services;
 
 namespace ImporterApp.Services
 {
-    public class ImporterService : IImporterService
+    internal class ImporterService : IImporterService
     {
-        private readonly ISupervisorService _superVisorService;
-        private readonly IThemeService _themeVisorService;
+        private readonly ISupervisorService _supervisorService;
+        private readonly IThemeService _themeService;
         private readonly IStProgramService _stProgramService;
 
-        public ImporterService(ISupervisorService superVisorService, IThemeService themeVisorService, IStProgramService stProgramService)
+        public ImporterService(ISupervisorService supervisorService, IThemeService themeService, IStProgramService stProgramService)
         {
             _stProgramService = stProgramService;
-            _superVisorService = superVisorService;
-            _themeVisorService = themeVisorService;
+            _supervisorService = supervisorService;
+            _themeService = themeService;
         }
 
-        public async Task ResetAndImport()
+        public async Task ResetDatabaseState()
         {
-
-            await _superVisorService.DeleteAllSupervisors();
-            await _themeVisorService.DeleteAllThemes();
+            await _supervisorService.DeleteAllSupervisors();
+            await _themeService.DeleteAllThemes();
             await _stProgramService.DeleteAllStPrograms();
         }
 
-        public Task ImportSupervisors(string filePath)
+        public async Task ImportSupervisors(List<SupervisorDTO> supervisors)
         {
-            throw new NotImplementedException();
+            List<Supervisor> supervisorsEntities = new List<Supervisor>();
+
+            for (int i = 0; i < supervisors.Count; i++)
+            {
+                var supervisor = supervisors[i];
+                var used = false;
+                for (int j = 0; j < supervisorsEntities.Count; j++)
+                {
+                    if (supervisorsEntities[j].FullName == supervisors[i].FullName)
+                    {
+                        used = true;
+                        break;
+                    }
+                }
+
+                if (used)
+                {
+                    continue;
+                }
+
+                supervisorsEntities.Add(supervisor.TransformToEntity());
+            }
+
+            await _supervisorService.BulkAddSupervisors(supervisorsEntities);
         }
 
-        public Task ImportThemes(string filePath)
+        public async Task ImportThemes(List<ThemeDTO> themes)
         {
-            throw new NotImplementedException();
+            List<Theme> themesEntities = new List<Theme>();
+
+            for (int i = 0; i < themes.Count; i++)
+            {
+                var themeDto = themes[i];
+
+                var stProgram = await _stProgramService.GetStProgramByFieldOfStudy(themeDto.FieldOfStudy);
+                var supervisor = await _supervisorService.GetSupervisorFullName(themeDto.Supervisor);
+
+                themeDto.StProgramId = stProgram.Id;
+                themeDto.SupervisorId = supervisor.Id;
+
+                var theme = themeDto.TransformToEntity();
+                themesEntities.Add(theme);
+            }
+
+            await _themeService.BulkAddThemes(themesEntities);
         }
 
-        public Task ImportStPrograms(string filePath)
+        public async Task ImportStPrograms(List<StProgramDTO> stPrograms)
         {
-            throw new NotImplementedException();
+            List<StProgram> stProgramsEntities = new List<StProgram>();
+
+            for (int i = 0; i < stPrograms.Count; i++)
+            {
+                var stProgram = stPrograms[i];
+                var used = false;
+                for (int j = 0; j < stProgramsEntities.Count; j++)
+                {
+                    if (stProgramsEntities[j].FieldOfStudy == stPrograms[i].FieldOfStudy)
+                    {
+                        used = true;
+                        break;
+                    }
+                }
+
+                if (used)
+                {
+                    continue;
+                }
+
+                stProgramsEntities.Add(stProgram.TransformToEntity());
+            }
+
+            await _stProgramService.BulkAddStPrograms(stProgramsEntities);
         }
     }
 }

@@ -21,7 +21,10 @@ namespace SharedLibrary.Services
 
         public async Task BulkAddThemes(List<Theme> themes)
         {
-            _context.Themes.AddRange(themes);
+            for (int i = 0; i < themes.Count; i++)
+            {
+                _context.Themes.Add(themes[i]);
+            }
             await _context.SaveChangesAsync();
         }
 
