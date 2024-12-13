@@ -10,6 +10,11 @@ namespace SharedLibrary.Data
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
             var connectionString = "Data Source=DissertionThemes.db";
+
+            var relativePath = "DissertionThemes.db";
+            var absolutePath = Path.GetFullPath(relativePath);
+            Console.WriteLine($"Database File Path: {absolutePath}");
+
             optionsBuilder.UseSqlite(connectionString);
 
             return new ApplicationDbContext(optionsBuilder.Options);

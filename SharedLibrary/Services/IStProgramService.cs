@@ -8,8 +8,8 @@ namespace SharedLibrary.Services
         Task<StProgram> GetStProgramById(int id);
         Task<List<Theme>> GetStProgramThemes(int id);
 
-        Task AddStProgramAsync(StProgram stProgram);
-        Task BulkAddStProgramsAsync(List<StProgram> stPrograms);
-        Task DeleteAllStProgramsAsync();
+        Task AddStProgram(StProgram stProgram);
+        Task BulkAddStPrograms(List<StProgram> stPrograms);
+        Task DeleteAllStPrograms();
     }
 }

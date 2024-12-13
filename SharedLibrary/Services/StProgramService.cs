@@ -13,19 +13,19 @@ namespace SharedLibrary.Services
             _context = context;
         }
 
-        public async Task AddStProgramAsync(StProgram stProgram)
+        public async Task AddStProgram(StProgram stProgram)
         {
             _context.StPrograms.Add(stProgram);
             await _context.SaveChangesAsync();
         }
 
-        public async Task BulkAddStProgramsAsync(List<StProgram> stPrograms)
+        public async Task BulkAddStPrograms(List<StProgram> stPrograms)
         {
             _context.StPrograms.AddRange(stPrograms);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAllStProgramsAsync()
+        public async Task DeleteAllStPrograms()
         {
             await _context.StPrograms.ExecuteDeleteAsync();
         }

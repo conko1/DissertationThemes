@@ -12,6 +12,8 @@
 
 # Additional user specified
 SharedLibrary/DissertionThemes.db
+SharedLibrary/DissertionThemes.db-shm
+SharedLibrary/DissertionThemes.db-wal
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
