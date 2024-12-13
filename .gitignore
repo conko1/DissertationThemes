@@ -10,6 +10,9 @@
 *.userosscache
 *.sln.docstates
 
+# Additional user specified
+SharedLibrary/DissertionThemes.db
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
