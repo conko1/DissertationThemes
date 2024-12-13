@@ -7,7 +7,6 @@ using ImporterApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Data;
-using SharedLibrary.Entity;
 using SharedLibrary.Services;
 
 namespace ImporterApp {
@@ -76,8 +75,6 @@ namespace ImporterApp {
 
             services.AddSingleton<ISupervisorService, SupervisorService>();
             services.AddSingleton<IThemeService, ThemeService>();
-            services.AddSingleton<IStProgramService, StProgramService>();
-
             services.AddSingleton<IStProgramService, StProgramService>();
 
             var projectRootPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;

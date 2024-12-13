@@ -13,6 +13,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImporterApp", "ImporterApp\ImporterApp.csproj", "{55EA33E3-40AE-4627-9593-2D1AFB93B40E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{4E6FFC28-DD39-457A-90F7-4E436CDB8445}"
+	ProjectSection(ProjectDependencies) = postProject
+		{93267D04-5564-42F0-9FC8-EF83909F667A} = {93267D04-5564-42F0-9FC8-EF83909F667A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
