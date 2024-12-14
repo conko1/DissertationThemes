@@ -1,4 +1,6 @@
-﻿namespace SharedLibrary.Entity
+﻿using System.Text.Json.Serialization;
+
+namespace SharedLibrary.Entity
 {
     public class StProgram : BaseEntity
     {

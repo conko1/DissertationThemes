@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.Data;
 using SharedLibrary.Entity;
 
@@ -33,15 +34,31 @@ namespace SharedLibrary.Services
             await _context.Themes.ExecuteDeleteAsync();
         }
 
-        public async Task<List<Theme>> GetAllThemes(int? year, int? stProgramId)
+        public async Task<List<Theme>> GetAllThemes(ThemeFilterParams? filterParams = null)
         {
             var query = _context.Themes.AsQueryable();
 
-            if (year.HasValue)
-                query = query.Where(t => t.CreatedAt.Year == year);
+            if (filterParams == null)
+            {
+                return await query.ToListAsync();
+            }
 
-            if (stProgramId.HasValue)
-                query = query.Where(t => t.StProgramId == stProgramId);
+            if (filterParams.Year != null)
+            {
+                query = query.Where(t => t.CreatedAt.Year == filterParams.Year);
+            }
+
+            if (filterParams.StudyProgram != null)
+            {
+                var stProgramsIds = await _context.StPrograms
+                    .Where(t => t.Name == filterParams.StudyProgram)
+                    .Select(t => t.Id)
+                    .ToListAsync();
+                query = query.Where(t => stProgramsIds.Contains(t.StProgramId));
+            }
+
+            //query = query.Include(t => t.StProgram);
+            //query = query.Include(t => t.Supervisor);
 
             return await query.ToListAsync();
         }
@@ -50,5 +67,14 @@ namespace SharedLibrary.Services
         {
             return await _context.Themes.FirstOrDefaultAsync(t => t.Id == id);
         }
+    }
+
+    public class ThemeFilterParams
+    {
+        [FromQuery(Name = "study_program")]
+        public string? StudyProgram { get; set; }
+
+        [FromQuery(Name = "year")]
+        public int? Year { get; set; }
     }
 }

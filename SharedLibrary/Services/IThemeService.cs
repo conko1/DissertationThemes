@@ -9,7 +9,7 @@ namespace SharedLibrary.Services
 {
     public interface IThemeService
     {
-        Task<List<Theme>> GetAllThemes(int? year = null, int? stProgramId = null);
+        Task<List<Theme>> GetAllThemes(ThemeFilterParams? filterParams = null);
         Task<Theme> GetThemeById(int id);
 
         Task AddTheme(Theme theme);
