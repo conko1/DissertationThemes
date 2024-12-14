@@ -18,6 +18,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite($"Data Source={dbFilePath}"));
 
 builder.Services.AddScoped<IThemeService, ThemeService>();
+builder.Services.AddScoped<IStProgramService, StProgramService>();
+builder.Services.AddScoped<ISupervisorService, SupervisorService>();
 
 var app = builder.Build();
 
