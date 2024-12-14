@@ -4,7 +4,7 @@ namespace SharedLibrary.Services
 {
     public interface IStProgramService
     {
-        Task<List<StProgram>> GetAllStPrograms();
+        Task<List<StProgram>> GetAllStPrograms(bool orderByName);
         Task<StProgram> GetStProgramById(int id);
         Task<List<Theme>> GetStProgramThemes(int id);
         Task<StProgram> GetStProgramByFieldOfStudy(string fieldOfStudy);

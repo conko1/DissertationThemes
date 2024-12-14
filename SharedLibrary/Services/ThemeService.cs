@@ -2,15 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.Data;
 using SharedLibrary.Entity;
+using System.IO.IsolatedStorage;
+using SharedLibrary.Mapping;
+using SharedLibrary.Dtos;
+using AutoMapper;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SharedLibrary.Services
 {
     public class ThemeService : IThemeService
     {
         private readonly ApplicationDbContext _context;
+        private readonly MapperWrapper _mapper;
 
         public ThemeService(ApplicationDbContext context)
         {
+            _mapper = new MapperWrapper();
             _context = context;
         }
 
@@ -34,14 +41,9 @@ namespace SharedLibrary.Services
             await _context.Themes.ExecuteDeleteAsync();
         }
 
-        public async Task<List<Theme>> GetAllThemes(ThemeFilterParams? filterParams = null)
+        public async Task<List<ThemeDTO>> GetAllThemes(ThemeFilterParams filterParams)
         {
             var query = _context.Themes.AsQueryable();
-
-            if (filterParams == null)
-            {
-                return await query.ToListAsync();
-            }
 
             if (filterParams.Year != null)
             {
@@ -57,15 +59,50 @@ namespace SharedLibrary.Services
                 query = query.Where(t => stProgramsIds.Contains(t.StProgramId));
             }
 
-            //query = query.Include(t => t.StProgram);
-            //query = query.Include(t => t.Supervisor);
+            query = query
+                .Include(t => t.StProgram)
+                .Include(t => t.Supervisor);
 
-            return await query.ToListAsync();
+            return SerializeToThemeDTO(await query.ToListAsync());
         }
 
-        public async Task<Theme> GetThemeById(int id)
+        public async Task<ThemeDTO> GetThemeById(int id)
         {
-            return await _context.Themes.FirstOrDefaultAsync(t => t.Id == id);
+            var theme = await _context.Themes
+                .Include(t => t.StProgram)
+                .Include(t => t.Supervisor)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            return SerializeToThemeDTO(theme);
+        }
+
+        public async Task<List<Int32>> GetThemesYears()
+        {
+            return await _context.Themes
+            .Select(t => t.CreatedAt.Year)
+            .Distinct()
+            .OrderBy(year => year)
+            .ToListAsync();
+        }
+
+        internal List<ThemeDTO> SerializeToThemeDTO(List<Theme> themes)
+        {
+            List<ThemeDTO> themesDtos = new List<ThemeDTO>();
+
+            foreach (Theme theme in themes)
+            {
+                themesDtos.Add(SerializeToThemeDTO(theme));
+            }
+
+            return themesDtos;
+        }
+
+        internal ThemeDTO SerializeToThemeDTO(Theme theme)
+        {
+            var themeDto = _mapper.Map<Theme, ThemeDTO>(theme);
+            themeDto.StProgram = _mapper.Map<StProgram, StProgramDTO>(theme.StProgram);
+            themeDto.Supervisor = _mapper.Map<Supervisor, SupervisorDTO>(theme.Supervisor);
+            return themeDto;
         }
     }
 

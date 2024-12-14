@@ -13,8 +13,12 @@ namespace SharedLibrary.Services
             _context = context;
         }
 
-        public async Task<List<StProgram>> GetAllStPrograms()
+        public async Task<List<StProgram>> GetAllStPrograms(bool orderByName)
         {
+            if (orderByName)
+            {
+                return await _context.StPrograms.OrderBy(t => t.Name).ToListAsync();
+            }
             return await _context.StPrograms.ToListAsync();
         }
 

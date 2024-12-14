@@ -15,5 +15,16 @@
                 default : return null;
             }
         }
+
+        public static string? FromEnum(this ResearchType value)
+        {
+            switch (value)
+            {
+                case ResearchType.BasicResearch: return "základný výskum";
+                case ResearchType.AppliedResearch: return "aplikovaný výskum";
+                case ResearchType.AppliedResearchExpDevelopment: return "aplikovaný výskum a experimentálny vývoj";
+                default: return null;
+            }
+        }
     }
 }

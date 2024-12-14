@@ -18,7 +18,7 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<StProgram>>> GetAllStPrograms()
         {
-            return Ok(await _stProgramService.GetAllStPrograms());
+            return Ok(await _stProgramService.GetAllStPrograms(true));
         }
     }
 }

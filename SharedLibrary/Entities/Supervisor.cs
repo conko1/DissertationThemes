@@ -8,6 +8,7 @@ namespace SharedLibrary.Entity
         [MaxLength(100)]
         public string FullName {  get; set; } = string.Empty;
 
+        [JsonIgnore]
         public List<Theme> Themes { get; set; } = new List<Theme>();
     }
 }

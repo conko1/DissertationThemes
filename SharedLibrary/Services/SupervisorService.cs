@@ -1,15 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharedLibrary.Data;
+using SharedLibrary.Dtos;
 using SharedLibrary.Entity;
+using SharedLibrary.Mapping;
 
 namespace SharedLibrary.Services
 {
     public class SupervisorService : ISupervisorService
     {
         private readonly ApplicationDbContext _context;
+        private readonly MapperWrapper _mapper;
 
         public SupervisorService(ApplicationDbContext context)
         {
+            _mapper = new MapperWrapper();
             _context = context;
         }
 

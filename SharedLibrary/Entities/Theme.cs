@@ -15,6 +15,7 @@ namespace SharedLibrary.Entity
 
         [Required]
         [ForeignKey("SupervisorId")]
+        [JsonIgnore]
         public Supervisor Supervisor { get; set; }
 
         [Required]
@@ -22,6 +23,7 @@ namespace SharedLibrary.Entity
 
         [Required]
         [ForeignKey("StProgramId")]
+        [JsonIgnore]
         public StProgram StProgram { get; set; }
 
         public bool IsFullTimeStudy { get; set; }
